@@ -1,0 +1,55 @@
+@layout('layouts.app')
+
+@section('content')
+<div class="panel-body">
+  @include('common.errors')
+  <form action="/task" method="POST" class="form-horizontal">
+    {{ csrfField() }}
+    <div class="form-group">
+      <label for="task" class="col-sm-3 control-label">Task</label>
+      <div class="col-sm-6">
+        <input type="text" name="name" id="task" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-6">
+        <button class="btn btn-default">
+          <i class="fa fa-plus"></i> タスク追加
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+@if(tasks.length > 0)
+<div class="panel panel-default">
+  <div class="panle-heading">
+    現在のタスク
+  </div>
+  <div class="panel-body">
+    <div class="table table-striped task-table">
+      <thead>
+        <th>Task</th>
+        <th>&nbsp;</th>
+      </thead>
+      <tbody>
+        @each(task in tasks)
+          <tr>
+            <td class="table-text">
+              <div>{{ task.name }}</div>
+            </td>
+            <td>
+              <form action="/task/{{task.id}}?_method=DELETE" method="POST">
+                {{ csrfField() }}
+                <button>タスク削除</button>
+              </form>
+            </td>
+          </tr>
+        @endeach
+      </tbody>
+    </div>
+  </div>
+</div>
+@endif
+@endsection
